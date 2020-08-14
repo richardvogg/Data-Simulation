@@ -45,8 +45,8 @@ Of course, there are also other considerations from business side that influence
 
 ## 2. When the real data is sensitive
 Companies usually protect their customers' data. This is great.
-For companies who put a lot of effort into learning and development it can be challenging to find adecuate datasets with customer datasets to train their employees.
-Again, data simulation comes to the rescue: We can simulate data with the following properties:
+
+For data analytics companies who put a lot of effort into learning and development it can be challenging to find adecuate datasets with customer datasets to train their employees. Again, data simulation comes to the rescue: We can simulate a complete database with the following properties:
 
 * it is completely made-up, zero risk to use in any initiative.
 * it is so sophisticated that young analysts can use it to practice their data analytics and storytelling capabilities.
