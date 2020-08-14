@@ -38,7 +38,7 @@ WSS goes down (the more clusters, the closer the points within a cluster get tog
 
 The R Square value is a weighted value of 1-WSS/(WSS+BSS). With an increasing number of clusters, WSS get smaller, so the R Square will increase until finally reach 1. If we plot the R Square value for different numbers of clusters, we obtain a chart. The elbow point is the point after which the addition of new clusters will not improve the separation of the data into groups. It is a good candidate to consider for the number of clusters.
 
-![](img/Elbow chart.png)
+![](img/Elbow_chart.png)
 
 Of course, there are also other considerations from business side that influence the final decision, but this can be helpful to support the decision.
 
