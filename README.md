@@ -4,7 +4,7 @@ When I want to get people enthusiastic about R, I recommend them to find a real 
 
 Nevertheless, there are situations where simulating your own data is the best option. I want to show two such examples.
 
-1. When explaining basic concepts.
+## 1. When explaining basic concepts.
 
 When we move to a more analytical future, we have to replace some things "that have always be done this way" by new methods. In this case, it is important to find a common ground for discussion and explain technical concepts in a compehensible way. When I prepare for such a discussion, I always prepare some simulated datasets which can support the narrative and explain the method.
 
@@ -43,5 +43,15 @@ The R Square value is a weighted value of 1-WSS/(WSS+BSS). With an increasing nu
 Of course, there are also other considerations from business side that influence the final decision, but this can be helpful to support the decision.
 
 
-2. When the real data is sensitive.
-Companies usually protect their customers' data
+## 2. When the real data is sensitive
+Companies usually protect their customers' data. This is great.
+For companies who put a lot of effort into learning and development it can be challenging to find adecuate datasets with customer datasets to train their employees.
+Again, data simulation comes to the rescue: We can simulate data with the following properties:
+
+* it is completely made-up, zero risk to use in any initiative.
+* it is so sophisticated that young analysts can use it to practice their data analytics and storytelling capabilities.
+* it is large, so that analysts learn to write efficient code.
+* it is available to everybody in the company, training initiatives and individuals.
+* it is accessible from RStudio, Python and pgAdmin containers.
+
+The code file about Data Simulation shows how we can use the great capabilities of R to create such a database.
