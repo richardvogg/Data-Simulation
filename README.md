@@ -2,7 +2,7 @@
 
 When I want to get people enthusiastic about R, I recommend them to find a real world dataset about a topic they are passionate about. The world is full of data and it was never easier to find data related to a certain topic.
 
-Nevertheless, there are situations where simulating your own data is the best option. I want to show two such examples.
+Nevertheless, there are situations where simulating your own data is the best option. I want to show two such examples and how R can help in these situations:
 
 ## 1. When explaining basic concepts.
 
