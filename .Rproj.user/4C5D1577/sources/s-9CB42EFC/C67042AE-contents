@@ -14,7 +14,12 @@ type <- ifelse(x*x+y*y+rnorm(n,0,0.15)<0.5,"A","B")
 data <- data.frame(x,y,class=factor(type))
 
 #plot data
-ggplot(data,aes(x,y,col=class))+geom_point()
+ggplot(data,aes(x,y,col=class))+geom_point()+
+  theme(axis.text=element_blank(),
+        legend.position = "none")+
+  labs(x="temperature",y="discount",title="When does my ice cream store meet sales targets?",
+       subtitle="Each point represents one day, blue points are successful days.")
+  
 
 # make grid
 #We split the plot window in 100 steps vertically and 100 steps horizontally.
