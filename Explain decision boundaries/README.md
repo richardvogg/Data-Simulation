@@ -1,7 +1,6 @@
 ## Decision boundaries
 
-In supervised Machine Learning tasks, we use algorithms that help us to take decisions. These algorithms require data to learn from. Take the example of a binary classificaction task. 
-Here, we only have two possible outcomes.
+In supervised Machine Learning tasks, we use algorithms that help us to take decisions. We train them with data that is already labelled, i.e. where we know what is the real outcome.
 
 An easy example is the ice cream store which wants to predict if it can meet the sales target on a given day. 
 
