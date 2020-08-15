@@ -1,0 +1,93 @@
+## Skript to 
+
+library(parsnip) #for models
+library(ggplot2) #for visualization
+
+#Simulate data
+n <- 250
+
+x <- runif(n)
+y <- runif(n)
+type <- ifelse(x*x+y*y+rnorm(n,0,0.15)<0.5,"A","B")
+
+
+data <- data.frame(x,y,class=factor(type))
+
+#plot data
+ggplot(data,aes(x,y,col=class))+geom_point()
+
+# make grid
+#We split the plot window in 100 steps vertically and 100 steps horizontally.
+#Later we use this grid to predict what the value would be on each field.
+resolution <- 100
+r <- sapply(data[,1:2], range, na.rm = TRUE)
+xs <- seq(r[1,1], r[2,1], length.out = resolution)
+ys <- seq(r[1,2], r[2,2], length.out = resolution)
+grid <- cbind(rep(xs, each=resolution), rep(ys, times = resolution))
+colnames(grid) <- colnames(r)
+grid <- as.data.frame(grid)
+
+
+#Train models
+
+#Check the engines here: https://www.tidymodels.org/find/parsnip/
+#In some cases you have to install the engine package to be able to use it.
+
+tree <- decision_tree(tree_depth=5) %>% 
+  set_mode("classification") %>% 
+  set_engine("rpart") %>% 
+  fit(class~.,data=data)
+
+knn <- nearest_neighbor(neighbors = 7) %>% 
+  set_mode("classification") %>% 
+  set_engine("kknn") %>% 
+  fit(class~.,data=data)
+
+svm <- svm_rbf() %>% 
+  set_mode("classification") %>% 
+  set_engine("kernlab") %>% 
+  fit(class~.,data=data)
+
+
+
+#Get a prediction on each point of the grid to see what the model would predict
+predict_on_grid <- function(model,grid) {
+  p <- predict(model,grid)
+  p <- p$.pred_class
+  grid$class <- as.factor(p)
+  
+  return(grid)
+}
+
+plot_boundaries <- function(data,col_grid) {
+  ggplot(col_grid,aes(x=x,y=y,fill=class))+
+    geom_tile(alpha=0.3)+
+    geom_point(data=data,aes(col=class))+
+    theme(axis.text=element_blank(),
+          axis.title=element_blank(),
+          legend.position = "none")
+}
+
+
+col_grid <- predict_on_grid(knn,grid)
+plot_boundaries(data,col_grid)
+
+
+
+
+## Show kNN example
+
+for(k in c(1,3,7,15,30)) {
+  knn <- nearest_neighbor(neighbors = k,weight_func = "rectangular") %>% 
+    set_mode("classification") %>% 
+    set_engine("kknn") %>% 
+    fit(class~.,data=data)
+  
+  col_grid <- predict_on_grid(knn,grid)
+  assign(paste0("p",k),plot_boundaries(data,col_grid)+ggtitle(paste("k =",k)))
+  
+}
+
+library(patchwork)
+
+p1+p3+p7+p15+p30
