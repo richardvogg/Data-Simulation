@@ -16,4 +16,6 @@ When we train Machine Learning algorithms, they use this data to find decision a
 
 Each algorithm depends on parameters. If we play around with those, we can create better areas. This can also be used to explain the concept of over- and underfitting.
 
+This example shows how the boundary changes when using different k for the k-Nearest Neighbor algorithm.
+
 ![](../img/kNN_parameters.png)
