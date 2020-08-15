@@ -77,7 +77,7 @@ plot_boundaries(data,col_grid)
 
 ## Show kNN example
 
-for(k in c(1,3,7,15,30)) {
+for(k in c(1,3,7,15,55)) {
   knn <- nearest_neighbor(neighbors = k,weight_func = "rectangular") %>% 
     set_mode("classification") %>% 
     set_engine("kknn") %>% 
@@ -90,4 +90,4 @@ for(k in c(1,3,7,15,30)) {
 
 library(patchwork)
 
-p1+p3+p7+p15+p30
+p1+p3+p7+p15+p55
