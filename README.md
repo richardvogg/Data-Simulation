@@ -10,7 +10,7 @@ Nevertheless, there are situations where simulating your own data is the best op
 
 ## 1. When explaining basic concepts.
 
-When we move to a more analytical future, we have to replace some things "that have always be done this way" by new methods. In this case, it is important to find a common ground for discussion and explain technical concepts in a compehensible way. When I prepare for such a discussion, I always prepare some simulated datasets which can support the narrative and explain the method.
+When we move to a more analytical future, we have to replace some things "that have always be done this way" by new methods. In this case, it is important to find a common ground for discussion and explain technical concepts in a comprehensible way. When I prepare for such a discussion, I always prepare some simulated datasets which can support the narrative and explain the method.
 
 Two small examples:
 * [Explain how we can decide on a good number of clusters when using k-means.](https://github.com/richardvogg/Data-Simulation/tree/master/Explain%20clustering%20concepts)
