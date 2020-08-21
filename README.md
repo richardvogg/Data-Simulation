@@ -29,7 +29,18 @@ For data analytics companies who put a lot of effort into learning and developme
 
 The code file about Data Simulation shows how we can use the great capabilities of R to create such a database.
 
+Here is a quick outline of the functions used:
+* Independent variables
+  * rnorm, rexp, runif, rpois to create numeric variables
+  * sample to create categorical variables
+* Correlate variables
+  * Manual rules with ifelse and case_when
+  * Using cholesky to obtain a desired correlation between variables
+* Create simulated bank transactions for each simulated customer
+  * Manual rules based on customer characteristics with case_when and runif
+  * Using rmultinom to split total value into a given number of transactions
+
 
 ## 3. When another team is waiting for the data
 Pulling together data from several sources, quality checks and processing of the data can take several weeks when working with large corporate databases.
-If the end product is an application or a dashboard, and some other team is waiting for the data, with simulated data that has a format close to the real data, they can get started almost at the same time as the data team. This makes projects much more efficient.
+If the end product is an application or a dashboard produced by another team, they would have to wait until you finish the dataset. Knowing the approximate data structure and being able to simulate data can get the other team started while you are still working on putting the real data together. Design and functionality can be developed independently. This makes projects much more efficient.
