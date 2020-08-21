@@ -4,17 +4,18 @@ When I want to get people enthusiastic about R, I recommend them to find a real 
 
 Nevertheless, there are situations where simulating your own data is the best option. I want to show three such examples and how R can help in these situations:
 
-1. When explaining basic concepts
+1. When explaining concepts
 2. When the real data is sensitive
 3. When another team is waiting for the data
 
-## 1. When explaining basic concepts.
+## 1. When explaining concepts.
 
 When we move to a more analytical future, we have to replace some things "that have always be done this way" by new methods. In this case, it is important to find a common ground for discussion and explain technical concepts in a comprehensible way. When I prepare for such a discussion, I always prepare some simulated datasets which can support the narrative and explain the method.
 
-Two small examples:
+A few small examples:
 * [Explain how we can decide on a good number of clusters when using k-means.](https://github.com/richardvogg/Data-Simulation/tree/master/Explain%20clustering%20concepts)
 * [Explain how different classification algorithms find different decision boundaries.](https://github.com/richardvogg/Data-Simulation/tree/master/Explain%20decision%20boundaries)
+* David Robinson's [blogpost](http://varianceexplained.org/r/kmeans-free-lunch/) on why k-means does not work for every dataset.
 
 ## 2. When the real data is sensitive
 Companies usually protect their customers' data. This is great.
