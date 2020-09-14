@@ -36,7 +36,7 @@ Here is a quick outline of the functions used:
   * sample to create categorical variables
 * Correlate variables
   * Manual rules with ifelse and case_when
-  * Using cholesky to obtain a desired correlation between variables
+  * Using cholesky decomposition to obtain a desired correlation between variables
 * Create simulated bank transactions for each simulated customer
   * Manual rules based on customer characteristics with case_when and runif
   * Using rmultinom to split total value into a given number of transactions
