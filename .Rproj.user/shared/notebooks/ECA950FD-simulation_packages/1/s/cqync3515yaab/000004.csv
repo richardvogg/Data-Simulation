@@ -1,0 +1,1 @@
+"0","ggplot(panel_global_data,aes(x=ts_year,y=gdp_measure,col=countries,group=countries))+geom_line(size=2)"

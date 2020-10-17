@@ -1,0 +1,251 @@
+---
+title: "simulation_packages"
+author: "Richard Vogg"
+date: "16 10 2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE,warning=FALSE,message=FALSE)
+```
+
+## Additional packages
+
+```{r}
+library(dplyr)
+library(ggplot2)
+library(leaflet)
+```
+
+
+## rcorpora
+
+Check the github repository [here](https://github.com/gaborcsardi/rcorpora).
+
+The rcorpora library has 293 collections of words that can be very helpful for data simulation.
+
+```{r}
+library(rcorpora)
+
+length(corpora())
+corpora()[sample(1:293,10)]
+```
+
+To view the words of one collection use the name in the `corpora()` function.
+
+```{r}
+corpora("foods/pizzaToppings")
+```
+
+Let see how we can use this in a simulated dataframe.
+
+```{r}
+
+tibble(
+  first_name=corpora("humans/firstNames")$firstNames %>% sample(100,replace=TRUE),
+  last_name=corpora("humans/lastNames")$lastNames %>% sample(100,replace=TRUE),
+  self_description=corpora("humans/descriptions")$descriptions %>% sample(100,replace=TRUE),
+  home_country=corpora("geography/countries")$countries %>% sample(100,replace=TRUE),
+  favorite_pizza_topping=corpora("foods/pizzaToppings")$pizzaToppings %>% sample(100,replace=TRUE)
+)
+
+```
+
+### charlatan
+
+```{r}
+
+library(charlatan)
+
+ch_job(n=10)
+ch_name(n=10,locale="de_DE")
+ch_color_name(n=10)
+ch_phone_number(locale="de_DE",n=10)
+
+
+```
+
+A nice small application with fake locations.
+
+```{r}
+locations <- data.frame(lon=ch_lon(n=10),lat=ch_lat(n=10))
+leaflet(locations) %>% 
+  addProviderTiles("Stamen.Watercolor")  %>%
+  addMarkers(~lon, ~lat)
+```
+
+### fabricatr
+
+Easy creation of hierarchical data.
+In this example there are five families, each one has between 1 and 12 members. Each family member has between 1 and 5 accounts. With `add_level()` we can automatically produce a table that shows all accounts of all members in all families.
+
+```{r}
+library(fabricatr)
+
+fabricate(
+  family  = add_level(N = 5,
+  n_members = sample(1:12, N, replace = TRUE,prob=12:1)),
+  
+  members  = add_level(N = n_members,
+  n_accounts = sample(1:5,N,replace=TRUE,prob=(5:1)^2)),
+  
+  account = add_level(N = n_accounts)
+  ) %>%
+head(10)
+```
+
+Link levels. We can create 15 clients with their birth year and join year and some correlation between both variables.
+
+```{r}
+df <- fabricate(
+  age = add_level(N=51, birth_year=1950:2000),
+  tenure = add_level(N = 20, join_year=1991:2010, nest = FALSE),
+  client = link_levels(N = 15, by = join(age, tenure, rho = 0.7))
+)
+
+df %>% select(client,birth_year,join_year)
+
+```
+
+#### Ordered data
+
+`fabricatr` has an amazing function to create ordered data.
+
+Let's take a look at an example where we have two types of clients, gold clients that receive a yearly gift from the bank and standard clients that do not. How could we simulate their responses to a satisfaction survey?
+
+```{r}
+df <- fabricate(
+  N = 100,
+  gold_client_flag = draw_binary(prob = 0.3, N),
+  satisfaction = draw_ordered(
+    x = rnorm(N, mean = -0.4 + 1.2 * gold_client_flag),
+    breaks = c(-1.5, -0.5, 0.5, 1.5),
+    break_labels = c("Very Unsatisfied", "Unsatisfied", "Neutral",
+                     "Satisfied", "Very Satisfied")
+  )
+)
+
+df %>% count(gold_client_flag,satisfaction) %>%
+  tidyr::pivot_wider(id_cols=satisfaction,names_from="gold_client_flag",values_from="n")
+```
+
+To draw counts from a distribution we can use `draw_count()`.
+
+```{r}
+rtlme_model <- fabricate(
+  N = 1000,
+  radio_coverage = rlnorm(N, meanlog=0, sdlog=1),
+  violent_incident_count = draw_count(mean = 1.5 * radio_coverage, N = N)
+)
+```
+
+
+#### Time series
+
+Example from [this article](https://declaredesign.org/r/fabricatr/articles/time_series.html).
+
+This example contains the gdp of five countries over the course of five years.
+
+```{r}
+panel_units <- fabricate(
+  countries = add_level(
+    N = 5,
+    base_gdp = runif(N, 15, 22),
+    growth_units = runif(N, 0.2, 0.8),
+    growth_error = runif(N, 0.1, 0.5)
+  ),
+  years = add_level(
+    N = 5,
+    ts_year = 0:4,
+    gdp_measure = base_gdp + (ts_year * growth_units) + rnorm(N, sd=growth_error)
+  )
+)
+
+panel_units
+```
+
+```{r,echo=FALSE}
+ggplot(panel_units,aes(x=ts_year,y=gdp_measure,col=countries,group=countries))+geom_line(size=2)
+```
+
+We can take this to the next level and introduce some year specific information and then cross this with the country specific information. We just have to add one layer.
+
+```{r}
+panel_global_data <- fabricate(
+  years = add_level(
+    N = 5,
+    ts_year = 0:4,
+    year_shock = rnorm(N, 0, 0.3) #each year has a global trend
+  ),
+  countries = add_level(
+    N = 5,
+    base_gdp = runif(N, 15, 22),
+    growth_units = runif(N, 0.2, 0.5), 
+    growth_error = runif(N, 0.1, 0.5),
+    nest = FALSE
+  ),
+  country_years = cross_levels(
+    by = join(years, countries),
+    gdp_measure = base_gdp + year_shock + (ts_year * growth_units) +
+      rnorm(N, sd=growth_error)
+  )
+)
+```
+
+```{r,echo=FALSE}
+ggplot(panel_global_data,aes(x=ts_year,y=gdp_measure,col=countries,group=countries))+geom_line(size=2)
+```
+
+### GenOrd
+
+This package helps to create discrete random variables with prescribed correlation matrix and marginal distributions.
+
+```{r}
+library(GenOrd)
+
+
+k <- 4 #number of random variables
+marginal <- list(0.6, c(1/3,2/3), c(1/4,2/4,3/4), c(1/5,2/5,3/5,4/5))
+
+```
+
+Read this as follows:
+* We will create 4 random variables.
+* The first variable will have two values 60% of the data will be 1, 40% will be 2.
+* The second variable will have three values, 1,2 and 3 with a probability of 33% each.
+* etc...
+* Each vector in this list refers to one variable, and we will see the cumulative probability for each value.
+
+
+```{r}
+corrcheck(marginal)
+```
+
+This function shows what are allowable ranges for the correlation matrix, given the input from the marginal distributions.
+
+
+```{r}
+Sigma <- matrix(c(1,0.5,0.4,0.3,
+                  0.5,1,0.5,0.4,
+                  0.4,0.5,1,0.5,
+                  0.3,0.4,0.5,1),
+                k, k, byrow=TRUE)
+
+
+n <- 1000 # sample size
+m <- ordsample(n, marginal, Sigma)
+
+df <- data.frame(m)
+head(df)
+```
+
+Let's verify that the data is actually what we expected.
+
+```{r}
+cor(df)
+
+df %>% count(X4)
+df %>% count(X1)
+```
+
+Later, we can rename the columns and values, but will have assured that 

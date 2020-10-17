@@ -1,0 +1,5 @@
+"0","balances %>%"
+"0","  tidyr::pivot_longer(-c(1,2),names_to=""Month"") %>%"
+"0","  mutate(Month=readr::parse_number(Month)) %>%"
+"0","  ggplot(aes(x=Month,y=value))+geom_line()+facet_wrap(~Client,scales=""free_y"")"
+"0",""

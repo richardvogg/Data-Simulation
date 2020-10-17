@@ -1,0 +1,147 @@
+---
+title: "Wakefield"
+author: "Richard Vogg"
+date: "15 10 2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE,message=FALSE,warning=FALSE)
+options(scipen=10)
+```
+
+## Exploring the wakefield package
+
+Looking for interesting packages around data composition I stumbled across the {wakefield} package by Tyler Rinker. 
+
+```{r}
+library(wakefield)
+library(dplyr)
+library(ggplot2)
+```
+
+Introduction can be found [here](https://github.com/trinker/wakefield).
+
+```{r}
+r_data_frame(
+    n = 500,
+    id,
+    age,
+    hour,
+    iq,
+    height,
+    died,
+    animal,
+    dice,
+    internet_browser,
+    political
+)
+
+```
+
+There are a lot of predefined variables that you can use.
+
+```{r, echo=FALSE}
+variables(type="matrix",ncols=5)
+```
+
+Additionally, you can also access the distribution functions easily and tweak parameters of the predefined functions.
+
+```{r}
+test <- r_data_frame(
+    n = 500,
+    id,
+    age(x=18:50),
+    `Reading(mins)` = rpois(lambda=20),
+    income(digits=0)
+)
+
+test
+
+```
+
+Looks too perfect? Include random missing values:
+
+```{r}
+test %>% r_na(cols=c(2,4),prob=0.3)
+```
+
+### Series
+
+Sequences of answers:
+
+```{r}
+r_series(likert,j = 5,n=10,name="Question")
+```
+
+These can also be packaged inside a data frame:
+
+```{r}
+r_data_frame(
+  n=10,
+  Student=id,
+  age=rpois(14),
+  r_series(grade,j=3,integer=TRUE,name="Test")
+)
+```
+
+That is great but not very real, because the test results are completely independent from each other.
+The `relate` parameter helps to connect the results, and the format is `fM_sd`.
+
+* f is one of (+,-,*,/)
+* M is the mean value
+* sd is the standard deviation of the mean value
+
+Example `+3_1`: The test results get better on average 3 points with a standard deviation of 1.
+
+```{r}
+r_data_frame(
+  n=10,
+  Student=id,
+  age=rpois(14),
+  r_series(grade,j=3,integer=TRUE,name="Test",relate="+3_1")
+)
+```
+
+With this in mind, you can create customer balances over time very easily.
+
+```{r}
+balances <- r_data_frame(
+  n=10,
+  Client=name,
+  age,
+  r_series(income,j=12,name="Month",relate="*1.03_0.1")
+)
+```
+
+We can see that there are customers who had very positive balance development and others whose balances were fluctuating more or declining.
+However, when we simulate a sufficiently large number of customers, we 
+
+```{r}
+balances %>%
+  tidyr::pivot_longer(-c(1,2),names_to="Month") %>%
+  mutate(Month=readr::parse_number(Month)) %>%
+  ggplot(aes(x=Month,y=value))+geom_line()+facet_wrap(~Client,scales="free_y")
+
+```
+
+## Visualization
+
+This is a great feature to quickly get a glimpse of data types and missing values (+ missing value distribution).
+
+```{r}
+r_data_frame(n=500,
+    id,
+    dob,
+    animal,
+    grade, grade,
+    death,
+    dummy,
+    grade_letter,
+    gender,
+    sentence
+) %>%
+   r_na(cols=c("DOB","Animal","Gender")) %>% 
+   table_heat(palette = "Set1")
+```
+

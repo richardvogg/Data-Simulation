@@ -1,0 +1,6 @@
+"0","balances <- r_data_frame("
+"0","  n=10,"
+"0","  Client=name,"
+"0","  age,"
+"0","  r_series(income,j=12,name=""Month"",relate=""*1.03_0.1"")"
+"0",")"

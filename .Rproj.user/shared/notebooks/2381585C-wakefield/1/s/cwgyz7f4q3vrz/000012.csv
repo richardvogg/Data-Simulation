@@ -1,0 +1,6 @@
+"0","r_data_frame("
+"0","  n=10,"
+"0","  Student=id,"
+"0","  age=rpois(14),"
+"0","  r_series(grade,j=3,integer=TRUE,name=""Test"")"
+"0",")"

@@ -1,0 +1,8 @@
+"0",""
+"0","tibble("
+"0","  first_name=corpora(""humans/firstNames"")$firstNames %>% sample(100,replace=TRUE),"
+"0","  last_name=corpora(""humans/lastNames"")$lastNames %>% sample(100,replace=TRUE),"
+"0","  self_description=corpora(""humans/descriptions"")$descriptions %>% sample(100,replace=TRUE),"
+"0","  home_country=corpora(""geography/countries"")$countries %>% sample(100,replace=TRUE),"
+"0","  favorite_pizza_topping=corpora(""foods/pizzaToppings"")$pizzaToppings %>% sample(100,replace=TRUE)"
+"0",")"
