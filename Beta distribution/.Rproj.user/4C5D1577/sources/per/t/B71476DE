@@ -3,22 +3,22 @@
     "path": "C:/Richard/R and Python/Experiments/gt/Beta_distribution.R",
     "project_path": "Beta_distribution.R",
     "type": "r_source",
-    "hash": "0",
+    "hash": "1958091013",
     "contents": "",
-    "dirty": true,
+    "dirty": false,
     "created": 1601776042314.0,
     "source_on_save": false,
     "relative_order": 1,
     "properties": {
-        "cursorPosition": "71,0",
-        "scrollLine": "51"
+        "cursorPosition": "56,22",
+        "scrollLine": "41"
     },
     "folds": "",
-    "lastKnownWriteTime": 1601930794,
+    "lastKnownWriteTime": 1602946253,
     "encoding": "UTF-8",
     "collab_server": "",
     "source_window": "",
-    "last_content_update": 1602944802733,
+    "last_content_update": 1602946253255,
     "read_only": false,
     "read_only_alternatives": []
 }
